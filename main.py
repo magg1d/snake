@@ -7,7 +7,7 @@ if True:
     WIN = pygame.display.set_mode((WIDTH, HEIGHT))
     pygame.display.set_caption("Snake")
 
-    FPS = 30
+    FPS = 10
 
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
@@ -22,7 +22,7 @@ FONT_SIZE = 20
 SCALE = WIDTH//20
 
 class Snake():
-    VELO = 5
+    VELO = 0.5
     BORDER_COLOR = WHITE
     FILL_COLOR = GREEN
 
@@ -55,13 +55,13 @@ class Snake():
             return
 
     def move(self):
-        self.headx += self.xvel
-        self.heady += self.yvel
+        self.headx += self.xvel * SCALE
+        self.heady += self.yvel * SCALE
 
     def draw(self, win):
         self.move()
-        pygame.draw.rect(win, self.BORDER_COLOR, (self.headx, self.heady, self.headwidth, self.headheight))
-        pygame.draw.rect(win, self.FILL_COLOR, (self.headx+2, self.heady+2, self.headwidth-4, self.headheight-4))
+        pygame.draw.rect(win, self.BORDER_COLOR, ((self.headx//SCALE) * SCALE, (self.heady//SCALE) * SCALE, self.headwidth, self.headheight))
+        pygame.draw.rect(win, self.FILL_COLOR, (((self.headx//SCALE) * SCALE)+2, ((self.heady//SCALE) * SCALE)+2, self.headwidth-4, self.headheight-4))
         pygame.display.update()
         
 
