@@ -1,3 +1,4 @@
+import random
 import pygame
 pygame.init()
 
@@ -62,8 +63,21 @@ class Snake():
         self.move()
         pygame.draw.rect(win, self.BORDER_COLOR, ((self.headx//SCALE) * SCALE, (self.heady//SCALE) * SCALE, self.headwidth, self.headheight))
         pygame.draw.rect(win, self.FILL_COLOR, (((self.headx//SCALE) * SCALE)+2, ((self.heady//SCALE) * SCALE)+2, self.headwidth-4, self.headheight-4))
-        pygame.display.update()
         
+class Food():
+    BORDER_COLOR = WHITE
+    FILL_COLOR = RED
+
+    def __init__(self):
+        self.x = random.randint(0, WIDTH//SCALE)*SCALE
+        self.y = random.randint(0, HEIGHT//SCALE)*SCALE
+        self.width = SCALE
+        self.height = SCALE
+
+    def draw(self, win):
+        pygame.draw.rect(win, self.BORDER_COLOR, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(win, self.FILL_COLOR, ())
+
 
 def draw(win,snake):
     win.fill(BLACK)
