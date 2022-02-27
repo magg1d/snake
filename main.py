@@ -23,7 +23,8 @@ SCALE = WIDTH//20
 
 class Snake():
     VELO = 5
-    COLOR = WHITE
+    BORDER_COLOR = WHITE
+    FILL_COLOR = GREEN
 
     def __init__(self):
         self.headx = WIDTH//2
@@ -33,45 +34,52 @@ class Snake():
         self.headwidth = SCALE
         self.headheight = SCALE
 
-    def move(self, dir):
+    def change_dir(self, dir):
         if dir == 0:
             self.xvel = 0
-            self.yvel = self.VELO
-            self.heady += self.yvel
+            self.yvel = -1 * self.VELO
+            #self.heady += self.yvel
         elif dir == 1:
             self.xvel = self.VELO
             self.yvel = 0
-            self.headx += self.xvel
+            #self.headx += self.xvel
         elif dir == 2:
             self.xvel = 0
-            self.yvel = -1*self.VELO
-            self.heady += self.yvel
+            self.yvel = self.VELO
+            #self.heady += self.yvel
         elif dir == 3:
             self.xvel = -1*self.VELO
             self.yvel = 0
-            self.headx += self.xvel
+            #self.headx += self.xvel
         else:
             return
 
+    def move(self):
+        self.headx += self.xvel
+        self.heady += self.yvel
+
     def draw(self, win):
-        pygame.draw.rect(win, self.COLOR, (self.headx, self.heady, self.headwidth, self.headheight))
+        self.move()
+        pygame.draw.rect(win, self.BORDER_COLOR, (self.headx, self.heady, self.headwidth, self.headheight))
+        pygame.draw.rect(win, self.FILL_COLOR, (self.headx+2, self.heady+2, self.headwidth-4, self.headheight-4))
         pygame.display.update()
         
 
-def draw(win):
+def draw(win,snake):
     win.fill(BLACK)
+    snake.draw(win)
     pygame.display.update()
 
 
-def handle_snake_movement(keys, snake):
+def handle_snake_direction(keys, snake):
     if keys[pygame.K_UP] and snake.yvel == 0: #and left_paddle.y - left_paddle.VEL >= 0:
-        snake.move(0)
+        snake.change_dir(0)
     if keys[pygame.K_RIGHT] and snake.xvel == 0: #and left_paddle.y + left_paddle.VEL + left_paddle.height <= HEIGHT:
-        snake.move(1)
+        snake.change_dir(1)
     if keys[pygame.K_DOWN] and snake.yvel == 0: #and left_paddle.y + left_paddle.VEL + left_paddle.height <= HEIGHT:
-        snake.move(2)
+        snake.change_dir(2)
     if keys[pygame.K_LEFT] and snake.xvel == 0: #and left_paddle.y + left_paddle.VEL + left_paddle.height <= HEIGHT:
-        snake.move(3)
+        snake.change_dir(3)
 
 def main():
     run = True
@@ -81,7 +89,7 @@ def main():
 
     while run:
         clock.tick(FPS)
-        snake.draw(WIN)
+        draw(WIN, snake)
         
 
         for event in pygame.event.get():
@@ -90,7 +98,7 @@ def main():
                 break
         
         key = pygame.key.get_pressed()
-        handle_snake_movement(key, snake)
+        handle_snake_direction(key, snake)
 
     pygame.quit()
 
